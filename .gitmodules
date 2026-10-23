@@ -1,0 +1,3 @@
+[submodule "src/app/core/plugins"]
+	path = src/app/core/plugins
+	url = https://github.com/code-ph0y/core-platform-plugins.git

@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ContainerSpec } from '../../../../ui-engine/containers/container-spec';
+import { ContainerSpec } from '../../../../plugins/containers/container-spec';
 
 export const loadPageDefinition = createAction(
   '[ContainerMgr] Load Page Definition',

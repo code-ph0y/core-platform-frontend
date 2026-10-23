@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as CMActions from '../actions/container-manager.actions';
-import { ContainerSpec } from '../../../../ui-engine/containers/container-spec';
+import { ContainerSpec } from '../../../../plugins/containers/container-spec';
 
 export interface ContainerManagerState {
   current: ContainerSpec | null;

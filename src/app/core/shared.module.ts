@@ -5,7 +5,7 @@ import { RouterLink, RouterLinkWithHref } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerModule } from 'ngx-spinner';
 
-import { ContainerModule } from './ui-engine/containers/container-module';
+import { ContainerModule } from './plugins/containers/container-module';
 
 @NgModule({
   declarations: [

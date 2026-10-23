@@ -17,7 +17,7 @@ export class ContainerCreationService {
     if (!childDef || !host) return null;
 
     // Lazy load the container map
-    const containerMapModule = await import('../../../ui-engine/containers/container-map');
+    const containerMapModule = await import('../../../plugins/containers/container-map');
     const compClass = (containerMapModule.containerMap as any)?.[childDef.container];
 
     if (!compClass) {

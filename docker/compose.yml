@@ -1,0 +1,21 @@
+services:
+  frontend:
+    profiles: ["prod"]
+
+    build:
+      context: ..
+      dockerfile: docker/frontend/Dockerfile
+      args:
+        BUILD_CONFIG: production
+
+    ports:
+      - "127.0.0.1:4200:80"
+
+    restart: unless-stopped
+
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    external: true

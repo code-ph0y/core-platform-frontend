@@ -7,25 +7,26 @@
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
-
     "target": "ES2022",
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "lib": [
       "ES2022",
       "dom",
       "DOM.Iterable"
     ],
-
     "importHelpers": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "jquery", "codemirror", "jest"],
-
+    "types": [
+      "node",
+      "jquery",
+      "codemirror",
+      "jest"
+    ],
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "noImplicitAny": true,

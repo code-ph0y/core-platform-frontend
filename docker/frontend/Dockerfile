@@ -1,6 +1,6 @@
 
 # ----------------- Build Stage -----------------
-FROM node:20-alpine AS build
+FROM node:24-alpine AS build
 
 WORKDIR /app
 
@@ -32,7 +32,7 @@ FROM nginx:1.27-alpine
 
 COPY --from=build /app/site/ /usr/share/nginx/html/
 
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY docker/frontend/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 

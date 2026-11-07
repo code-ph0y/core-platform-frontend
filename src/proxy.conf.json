@@ -1,7 +1,0 @@
-{
-    "/v1/*": {
-        "target": "http://localhost:88",
-        "secure": false,
-        "changeOrigin": true
-    }
-}

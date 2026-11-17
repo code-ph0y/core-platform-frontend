@@ -1,3 +1,8 @@
+
+import type {
+  ResourceQuery
+} from './services/data.service';
+
 /** Simple dictionary helper */
 export type Dict<T = any> = Record<string, T>;
 
@@ -16,21 +21,37 @@ export interface DataStateMap {
 
 export type ConnectionType = 'single' | 'poll' | 'websocket';
 
-/** Params for a single load request */
+/**
+ * Parameters for a single data load.
+ *
+ * queryId identifies the request and its result.
+ *
+ * query is optional during migration:
+ * - present: Core Platform Query V1
+ * - absent: existing legacy query behaviour
+ *
+ * bindVars can contain resolved route parameters.
+ */
 export interface LoadDataParams {
   containerId: string;
   queryId: string;
   bindVars?: Dict;
-  connectionType?: ConnectionType; // default 'single'
-  interval?: number;               // only for 'poll'
+  query?: ResourceQuery;
+  connectionType?: ConnectionType;
+  interval?: number;
 }
 
-/** Params for a batch load */
+/** Parameters for a batch of data loads */
 export interface LoadDataBatchParams {
-  requests: Array<Pick<LoadDataParams, 'containerId' | 'queryId' | 'bindVars'>>;
+  requests: Array<
+    Pick<
+      LoadDataParams,
+      'containerId' | 'queryId' | 'bindVars' | 'query'
+    >
+  >;
 }
 
-/** Params for saving data */
+/** Parameters for saving data */
 export interface SaveDataParams {
   containerId: string;
   endpoint: string;
@@ -39,7 +60,7 @@ export interface SaveDataParams {
   queryId?: string;
 }
 
-/** Params for deleting data */
+/** Parameters for deleting data */
 export interface DeleteDataParams {
   containerId: string;
   endpoint?: string;
@@ -48,7 +69,7 @@ export interface DeleteDataParams {
   bindVars?: Dict;
 }
 
-/** Page Definition (you can import ContainerSpec and alias it) */
+/** Page Definition */
 export interface ContainerSpec {
   container: string;
   attributes?: any;

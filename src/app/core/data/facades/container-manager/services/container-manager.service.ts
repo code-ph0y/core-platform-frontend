@@ -1,35 +1,40 @@
+
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from "../../../../../../environments/environment";
+
+import { environment } from '../../../../../../environments/environment';
 import { ContainerSpec } from '../../../../plugins/containers/container-spec';
 
 @Injectable({ providedIn: 'root' })
 export class ContainerManagerService {
-  private readonly apiUrl = `${environment.apiUrl}/api/page-definitions`;
+  private readonly apiUrl =
+    `${environment.apiUrl.replace(/\/+$/, '')}/api`;
 
   constructor(private http: HttpClient) {}
 
   fetchPageDefinition(
-    resource: string,
-    query: Record<string, any> = {}
+    applicationId: string,
+    route: string
   ): Observable<ContainerSpec> {
-    let params = new HttpParams();
+    const normalizedRoute = route.replace(/^\/+/, '');
 
-    Object.keys(query).forEach(k => {
-      const v = (query as any)[k];
-      if (v == null) return;
+    /**
+     * Application IDs use lowercase identifiers.
+     * Page IDs follow the backend application loader
+     * and controller contract, including camelCase.
+     */
+    if (
+      !/^[a-z][a-z0-9_-]*$/.test(applicationId) ||
+      !/^[a-zA-Z0-9][a-zA-Z0-9_-]*$/.test(normalizedRoute)
+    ) {
+      throw new Error('Invalid application page coordinates');
+    }
 
-      if (Array.isArray(v)) {
-        v.forEach(item => params = params.append(k, String(item)));
-      } else {
-        params = params.set(k, typeof v === 'string' ? v : String(v));
-      }
-    });
+    const url =
+      `${this.apiUrl}/applications/${encodeURIComponent(applicationId)}` +
+      `/pages/${encodeURIComponent(normalizedRoute)}`;
 
-    return this.http.get<ContainerSpec>(
-      `${this.apiUrl}/${encodeURIComponent(resource)}`,
-      { params }
-    );
+    return this.http.get<ContainerSpec>(url);
   }
 }

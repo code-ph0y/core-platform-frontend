@@ -1,45 +1,36 @@
-import { Action } from '@ngrx/store';
-import { RouterReducerState } from '@ngrx/router-store';
-import { CustomRouterState } from '../serializer/custom-router.serializer';
-import { ROUTER_NAVIGATED } from '@ngrx/router-store';
 
-/**
- * Initial router state for our custom router store.
- */
+import {
+  routerReducer as ngrxRouterReducer,
+  RouterReducerState
+} from '@ngrx/router-store';
+
+import { Action } from '@ngrx/store';
+
+import { CustomRouterState } from '../serializer/custom-router.serializer';
+
 export const initialRouterState: RouterReducerState<CustomRouterState> = {
   state: {
-    resource: '',
-    resourceType: '',
-    version: '',
-    queryParams: {},
     url: '',
     params: {},
+    queryParams: {},
+    applicationId: null,
+    page: null
   },
-  navigationId: 0,
+  navigationId: 0
 };
 
 /**
- * A basic router reducer that merges @ngrx/router-store data with
- * our custom state. If your app relies on the default router-store,
- * you may skip this and let StoreRouterConnectingModule handle it automatically.
+ * Use the official NgRx Router Store reducer.
+ *
+ * This handles navigation lifecycle actions, cancellations,
+ * errors and navigation IDs.
  */
 export function routerReducer(
-  state: RouterReducerState<CustomRouterState> = initialRouterState,
+  state: RouterReducerState<CustomRouterState> | undefined,
   action: Action
 ): RouterReducerState<CustomRouterState> {
-  switch (action.type) {
-    case ROUTER_NAVIGATED: {
-      // The payload has shape: { routerState, event }
-      // The custom serializer sets action.payload.routerState
-      const routerState = (action as any).payload?.routerState;
-      return {
-        ...state,
-        state: {
-          ...routerState,
-        },
-      };
-    }
-    default:
-      return state;
-  }
+  return ngrxRouterReducer<CustomRouterState>(
+    state ?? initialRouterState,
+    action
+  );
 }

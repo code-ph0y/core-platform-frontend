@@ -4,12 +4,12 @@ import { Store } from '@ngrx/store';
 import {
   selectPageDefinition,
   selectPageDefinitionLoading,
-  selectPageDefinitionError
+  selectPageDefinitionError,
 } from './selectors/container-manager.selectors';
 
 import {
   clearPageDefinition,
-  loadPageDefinition
+  loadPageDefinition,
 } from './actions/container-manager.actions';
 
 export * from './reducers/container-manager.reducer';
@@ -20,15 +20,20 @@ export * from './selectors/container-manager.selectors';
 export class ContainerManagerFacade {
   private store = inject(Store);
 
-  load(resource: string, pageType = 'default', version = 'default') {
-    this.store.dispatch(loadPageDefinition({ resource, pageType, version }));
+  pageDefinition$ = this.store.select(selectPageDefinition);
+  loading$ = this.store.select(selectPageDefinitionLoading);
+  error$ = this.store.select(selectPageDefinitionError);
+
+  load(applicationId: string, route: string): void {
+    this.store.dispatch(
+      loadPageDefinition({
+        applicationId,
+        route,
+      }),
+    );
   }
 
   clear() {
     this.store.dispatch(clearPageDefinition());
   }
-
-  pageDefinition$ = this.store.select(selectPageDefinition);
-  loading$ = this.store.select(selectPageDefinitionLoading);
-  error$ = this.store.select(selectPageDefinitionError);
 }

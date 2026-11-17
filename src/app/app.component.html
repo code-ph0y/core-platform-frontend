@@ -1,1 +1,33 @@
+<!-- Organisation selector -->
+<ng-container *ngIf="organisationPicker$ | async as picker">
+
+  <div *ngIf="picker.show" class="organisation-picker">
+
+    <label for="organisation-selection">
+      Organisation:
+    </label>
+
+    <select
+      id="organisation-selection"
+      #organisationSelect
+      [value]="picker.selectedOrganisationId"
+      (change)="selectOrganisation(organisationSelect.value)"
+    >
+
+      <option value="" disabled>
+        Select an organisation
+      </option>
+
+      <option
+        *ngFor="let organisation of picker.organisations"
+        [value]="organisation.id"
+      >
+        {{ organisation.label || organisation.name }}
+      </option>
+
+    </select>
+  </div>
+</ng-container>
+
+<!-- Metadata-driven application pages -->
 <router-outlet></router-outlet>

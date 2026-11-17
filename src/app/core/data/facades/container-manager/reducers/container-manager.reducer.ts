@@ -1,3 +1,4 @@
+
 import { createReducer, on } from '@ngrx/store';
 import * as CMActions from '../actions/container-manager.actions';
 import { ContainerSpec } from '../../../../plugins/containers/container-spec';
@@ -11,23 +12,55 @@ export interface ContainerManagerState {
 export const initialContainerManagerState: ContainerManagerState = {
   current: null,
   loading: false,
-  error: null,
+  error: null
 };
 
 export const containerManagerReducer = createReducer(
   initialContainerManagerState,
 
-  on(CMActions.clearPageDefinition, () => initialContainerManagerState),
-
-  on(CMActions.loadPageDefinition, (s) => ({
-    ...s, loading: true, error: null
+  /**
+   * Clear the current page definition.
+   */
+  on(CMActions.clearPageDefinition, () => ({
+    ...initialContainerManagerState
   })),
 
-  on(CMActions.loadPageDefinitionSuccess, (s, { pageDefinition }) => ({
-    ...s, loading: false, error: null, current: pageDefinition
+  /**
+   * Begin loading a new page.
+   *
+   * Clear the previous definition so stale or unauthorised
+   * content is not displayed during navigation.
+   */
+  on(CMActions.loadPageDefinition, state => ({
+    ...state,
+    current: null,
+    loading: true,
+    error: null
   })),
 
-  on(CMActions.loadPageDefinitionFailure, (s, { error }) => ({
-    ...s, loading: false, error
-  })),
+  /**
+   * Store the compiled page definition returned by the API.
+   */
+  on(
+    CMActions.loadPageDefinitionSuccess,
+    (state, { pageDefinition }) => ({
+      ...state,
+      current: pageDefinition,
+      loading: false,
+      error: null
+    })
+  ),
+
+  /**
+   * Stop loading and expose the error to the UI.
+   */
+  on(
+    CMActions.loadPageDefinitionFailure,
+    (state, { error }) => ({
+      ...state,
+      current: null,
+      loading: false,
+      error
+    })
+  )
 );

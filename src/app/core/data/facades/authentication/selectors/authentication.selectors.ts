@@ -37,3 +37,13 @@ export const isAuthenticated = createSelector(
     return Date.now() < expiresAtMs;
   }
 );
+
+export const selectSelectedOrganisationId = createSelector(
+  selectAuthState,
+  state => state.selectedOrganisationId
+);
+
+export const selectAvailableOrganisations = createSelector(
+  selectAuthState,
+  state => state.auth_response.organisations ?? []
+);
